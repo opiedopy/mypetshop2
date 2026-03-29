@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v4'; //  Bump this to 'v2' to trigger update
+const CACHE_VERSION = 'v5'; //  Bump this to 'v2' to trigger update
 const CACHE_NAME = `mypetshop-cache-${CACHE_VERSION}`;
 const ASSETS = [
     '/mypetshop2/',
