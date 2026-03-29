@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Welcome to my very new Gemini Pet Shop ver 11</title>
+    <title>Welcome to my very new Gemini Pet Shop ver 12</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,18 +19,21 @@
             background-color: #f8f9fa; 
             margin: 0; 
             padding: 20px; 
-            padding-top: env(safe-area-inset-top); /* iPhone 12/15 notch support */
+            padding-top: env(safe-area-inset-top); /* iPhone 12/15 notch support [cite: 4] */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         
         h1 { color: #222; margin-top: 20px; }
 
-        /* Image Gallery [cite: 1, 5, 21-25] */
         .gallery {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
             margin-top: 30px;
+            flex-grow: 1;
         }
 
         .gallery img { 
@@ -43,7 +46,14 @@
 
         .gallery img:active { transform: scale(0.98); }
 
-        /* Update Banner [cite: 3, 8, 31-33] */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Update Banner [cite: 31, 33] */
         #update-banner {
             position: fixed; 
             bottom: 30px; 
@@ -53,7 +63,7 @@
             color: white; 
             padding: 16px 28px; 
             border-radius: 50px;
-            display: none; /* Hidden by default */
+            display: none; 
             align-items: center;
             justify-content: center;
             z-index: 1000; 
@@ -63,7 +73,6 @@
             white-space: nowrap;
         }
 
-        /* Loading Spinner */
         .spinner {
             display: inline-block;
             width: 18px;
@@ -82,7 +91,7 @@
 </head>
 <body>
 
-    <h1>Welcome to my very new Gemini Pet Shop ver 11</h1>
+    <h1>Welcome to my very new Gemini Pet Shop ver 12</h1>
     
     <div class="gallery">
         <img src="images/dog.png" alt="Cyberpunk Dogs">
@@ -93,18 +102,20 @@
         <span id="banner-content">New version available! Tap to update.</span>
     </div>
 
+    <footer>
+        Version: 1.0.1
+    </footer>
+
     <script>
         let newWorker;
+        let refreshing = false; // Guard against infinite reload loops 
 
-        // Service Worker Registration [cite: 2, 26]
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(reg => {
-                    // Check for updates on page load/visit [cite: 8]
                     reg.addEventListener('updatefound', () => {
                         newWorker = reg.installing;
                         newWorker.addEventListener('statechange', () => {
-                            // Only show banner if the new worker is fully installed [cite: 3, 33]
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                 showBanner();
                             }
@@ -116,7 +127,6 @@
 
         function showBanner() {
             const banner = document.getElementById('update-banner');
-            // Guard against double-showing 
             if (banner.style.display !== 'flex') {
                 banner.style.display = 'flex';
             }
@@ -126,20 +136,16 @@
             if (newWorker) {
                 const bannerContent = document.getElementById('banner-content');
                 const banner = document.getElementById('update-banner');
-
-                // 1. Show Spinner and Loading Text
                 bannerContent.innerHTML = '<div class="spinner"></div> Loading new version...';
-                
-                // 2. Disable pointer events to prevent double-clicks 
                 banner.style.pointerEvents = 'none';
-
-                // 3. Signal SW to skipWaiting [cite: 8, 32]
-                newWorker.postMessage({ action: 'skipWaiting' });
+                newWorker.postMessage({ action: 'skipWaiting' }); // [cite: 8, 32]
             }
         }
 
-        // Refresh the page once the new Service Worker is active
+        // 
         navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
             window.location.reload();
         });
     </script>
