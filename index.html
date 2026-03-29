@@ -3,41 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Gemini Pet Shop    ver 1.0.2</title>
+    <title>Gemini Pet Shop ver 45</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="images/curler-hamster-icon.png">
-    
-    <link rel="manifest" href="manifest.json?v=1.0.2">
-    
+    <link rel="manifest" href="manifest.json?v=2">
     <style>
         body { font-family: -apple-system, sans-serif; text-align: center; background: #f8f9fa; margin: 0; padding: 20px; padding-top: env(safe-area-inset-top); display: flex; flex-direction: column; min-height: 100vh; }
         .gallery { display: flex; flex-direction: column; align-items: center; gap: 20px; flex-grow: 1; }
         .gallery img { width: 90%; max-width: 500px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
-        #update-banner { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #d32f2f; color: white; padding: 16px 28px; border-radius: 50px; display: none; align-items: center; z-index: 1000; cursor: pointer; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        #update-banner { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #007aff; color: white; padding: 16px 28px; border-radius: 50px; display: none; align-items: center; z-index: 1000; cursor: pointer; font-weight: bold; }
         .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 0.8s linear infinite; margin-right: 12px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        footer { margin-top: 40px; padding: 20px; font-size: 0.8rem; color: #888; }
+        footer { margin-top: 40px; padding: 20px; font-size: 0.9rem; color: #444; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>Welcome to Gemini Pet Shop   ver 1.0.2</h1>
+    <h1>Welcome to Gemini Pet Shop ver 45</h1>
     <div class="gallery">
-        <img src="images/dog.png" alt="Cyberpunk Dogs">
-        <img src="images/cat.png" alt="Psychedelic Cat">
+        <img src="images/dog.png" alt="Dog">
+        <img src="images/cat.png" alt="Cat">
     </div>
     <div id="update-banner" onclick="activateUpdate()">
-        <span id="banner-content">✨ Update Ready! Tap to Refresh</span>
+        <span id="banner-content"><div class="spinner"></div> Update Ready! Tap to Refresh</span>
     </div>
-    <footer>Version: 1.0.2</footer>
-
+    <footer>Version: 1.0.4</footer>
     <script>
         let newWorker;
         let refreshing = false;
-
         if ('serviceWorker' in navigator) {
-            // Added ?v= to sw.js registration
-            navigator.serviceWorker.register('sw.js?v=1.0.2').then(reg => {
+            navigator.serviceWorker.register('sw.js?v=2').then(reg => {
                 reg.addEventListener('updatefound', () => {
                     newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
@@ -48,15 +43,11 @@
                 });
             });
         }
-
         function activateUpdate() {
             if (newWorker) {
-                document.getElementById('banner-content').innerHTML = '<div class="spinner"></div> Updating App...';
-                document.getElementById('update-banner').style.pointerEvents = 'none';
                 newWorker.postMessage({ action: 'skipWaiting' });
             }
         }
-
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             if (refreshing) return;
             refreshing = true;
