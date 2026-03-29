@@ -1,8 +1,4 @@
-/* SERVICE WORKER: sw.js (v1.0.3) */
-
-const CACHE_VERSION = 'v1.0.3'; 
-const CACHE_NAME = `mypetshop-cache-${CACHE_VERSION}`;
-
+const CACHE_NAME = 'petshop-v1.0.4';
 const ASSETS = [
     '/mypetshop2/',
     '/mypetshop2/index.html',
@@ -13,36 +9,29 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
-    e.waitUntil(
-        caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS))
-    );
+    e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(ASSETS)));
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
     e.waitUntil(
-        caches.keys().then((keys) => {
-            return Promise.all(keys.map((k) => {
-                if (k !== CACHE_NAME) return caches.delete(k);
-            }));
-        }).then(() => self.clients.claim()) // Immediate takeover [text2.txt]
+        caches.keys().then((keys) => Promise.all(
+            keys.map((k) => { if (k !== CACHE_NAME) return caches.delete(k); })
+        )).then(() => self.clients.claim())
     );
 });
 
+// NETWORK-FIRST for the HTML page to prevent the iPhone from getting "stuck"
 self.addEventListener('fetch', (e) => {
-    // SPECIAL RULE: For index.html, try network first to bypass iOS home screen stuckness
     if (e.request.mode === 'navigate') {
         e.respondWith(
             fetch(e.request).catch(() => caches.match(e.request))
         );
         return;
     }
-
-    // Default Cache-First for images and other assets
-    e.respondWith(
-        caches.match(e.request).then((res) => res || fetch(e.request))
-    );
+    e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
 });
 
 self.addEventListener('message', (e) => {
-    if (e.data && e.data.action === 'skipWaiting') self.skipWaiting();
+    if (e.data.action === 'skipWaiting') self.skipWaiting();
 });
