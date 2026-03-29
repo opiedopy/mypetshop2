@@ -8,7 +8,7 @@ const ASSETS = [
   '/geminipet/images/curler-hamster-icon.png'
 ];
 
-// Install: precache assets + skipWaiting is handled only after user approval
+// Install: precache assets (no skipWaiting – update waits for close/reopen)
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -17,21 +17,14 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate: claim clients immediately
+// Activate: claim clients immediately (new SW only becomes active after full close/reopen)
 self.addEventListener('activate', event => {
   event.waitUntil(
     self.clients.claim().then(() => console.log('Service Worker claimed clients'))
   );
 });
 
-// Message from index.html to skip waiting
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
-// Fetch: Network-First ONLY for HTML (critical for iOS Home Screen)
+// Fetch: Network-First ONLY for HTML (critical for iOS Home Screen), Cache-First for everything else
 self.addEventListener('fetch', event => {
   const isNavigation = event.request.mode === 'navigate' ||
                        event.request.destination === 'document';
