@@ -1,13 +1,7 @@
-
 {
   "name": "My Pet Shop 2",
-  "short_name": "PetShop",
+  "short_name": "PetShop2",
   "description": "Welcome to my Pet Shop PWA",
-  "start_url": "/mypetshop2/index.html",
-  "scope": "/mypetshop2/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#333333",
   "icons": [
     {
       "src": "images/curler-hamster-icon.png",
@@ -15,5 +9,11 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "/mypetshop2/index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#333333",
+  "scope": "/mypetshop2/",
+  "orientation": "portrait-primary"
 }
