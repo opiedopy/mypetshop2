@@ -1,11 +1,11 @@
-const CACHE_NAME = 'petshop-v1.0.49754';
+const CACHE_NAME = 'gempet-v1.0.49754';
 const ASSETS = [
-  '/mypetshop2/',
-  '/mypetshop2/index.html',
-  '/mypetshop2/manifest.json',
-  '/mypetshop2/images/dog.png',
-  '/mypetshop2/images/cat.png',
-  '/mypetshop2/images/curler-hamster-icon.png'
+  '/geminipet/',
+  '/geminipet/index.html',
+  '/geminipet/manifest.json',
+  '/geminipet/images/dog.png',
+  '/geminipet/images/cat.png',
+  '/geminipet/images/curler-hamster-icon.png'
 ];
 
 // Install: precache assets + skipWaiting is handled only after user approval
