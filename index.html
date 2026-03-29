@@ -25,11 +25,11 @@
 </head>
 <body>
 
-    <h1>Welcome to my Pet Shop</h1> [cite: 1]
+    <h1>Welcome to my Pet Shop</h1> 
     
     <div class="gallery">
-        <img src="images/dog.png" alt="Cyberpunk Dogs"> [cite: 1, 22]
-        <img src="images/cat.png" alt="Psychedelic Cat"> [cite: 1, 24]
+        <img src="images/dog.png" alt="Cyberpunk Dogs"> 
+        <img src="images/cat.png" alt="Psychedelic Cat"> 
     </div>
 
     <div id="update-banner" onclick="activateUpdate()">
@@ -54,14 +54,14 @@
 
         function showBanner() {
             const banner = document.getElementById('update-banner');
-            if (banner.style.display !== 'block') { [cite: 33]
+            if (banner.style.display !== 'block') { 
                 banner.style.display = 'block';
             }
         }
 
         function activateUpdate() {
             if (newWorker) {
-                newWorker.postMessage({ action: 'skipWaiting' }); [cite: 8, 32]
+                newWorker.postMessage({ action: 'skipWaiting' }); 
             }
         }
 
