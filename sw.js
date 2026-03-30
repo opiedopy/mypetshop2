@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gempet-ver 41';
+const CACHE_NAME = 'gempet-ver 41a';
 const ASSETS = [
 '/geminipet/',
 '/geminipet/index.html',
